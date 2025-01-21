@@ -1,2 +1,2 @@
 # authentication-prevs
-This repository deals with authenticating in a nodejs fullstack application
+This repository deals with authentication in a nodejs fullstack application
