@@ -2,11 +2,13 @@ import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import axios from "axios";
+// import Hit from "./auth2.js";
 const router = express.Router();
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-
+let tokenSave = " ";
 async function main() {
   type User = {
     email: string;
@@ -57,9 +59,10 @@ async function main() {
       }
 
       //Generate JWT token
-      const token = jwt.sign({ id: 1 }, "your_secret_key", {
+      const token = jwt.sign({id: 1}, "your_secret_key", {
         expiresIn: "1hr",
       });
+      tokenSave = token;
       res.json(token);
     } catch (e) {
       console.error(e);
@@ -68,7 +71,17 @@ async function main() {
       });
     }
   });
+  function Hit(){
+    axios.post("http://localhost:3000/check",{
+      Headers:{
+        "authorization":`${tokenSave}`
+      }
+    }).then(()=>{
+      console.log(tokenSave);
+    });
+  }
+  setInterval(Hit, 60000);
 }
 
 main();
-export {router};
+export {router, tokenSave};
