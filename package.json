@@ -1,18 +1,24 @@
 {
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/node": "^22.13.4",
+    "prisma": "^6.4.1",
+    "tsx": "^4.19.3",
     "typescript": "^5.7.3"
   },
   "scripts": {
-    "dev": "npx tsc && node ./dist/index.js"
+    "dev": "npx tsc && node ./dist/index.js",
+    "prisma" : "tsx ./src/seed.ts"
   },
   "type": "module",
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "@types/axios": "^0.14.4",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2"
   }
