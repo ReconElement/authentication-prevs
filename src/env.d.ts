@@ -1,5 +1,7 @@
-declare namespace NodeJs{
+declare namespace NodeJS{
     export interface ProcessEnv{
-        DATABASE_URL: string
+        DATABASE_URL: string;
+        PORT: string;
+        SECRET_KEY: string;
     }
 }

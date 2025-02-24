@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "npx tsc && node ./dist/index.js",
-    "prisma" : "tsx ./src/seed.ts"
+    "prisma": "tsx ./src/seed.ts"
   },
   "type": "module",
   "dependencies": {
