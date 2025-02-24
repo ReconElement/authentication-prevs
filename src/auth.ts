@@ -1,13 +1,13 @@
 import express from "express";
-const auth = express.Router();
+const auth = express.Router({});
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 auth.use(express.json());
 auth.use(express.urlencoded({ extended: true }));
 
+const db = new PrismaClient();
 async function main() {
-  const db = new PrismaClient();
 
   //handling POST request /signup
   auth.post("/signup", async (req, res) => {
@@ -102,5 +102,7 @@ async function main() {
     }
   });
 }
-main();
+main().then(()=>{
+    db.$disconnect();
+});
 export {auth};
