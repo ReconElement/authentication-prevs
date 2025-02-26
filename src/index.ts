@@ -1,4 +1,5 @@
 import { auth } from "./auth.js";
+import { posts } from "./posts.js";
 import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -42,6 +43,8 @@ app.use(function (req, res, next) {
     });
   }
 });
+
+app.use('/post',posts);
 
 app.get("/hello", (req, res) => {
   res.status(200).send({
