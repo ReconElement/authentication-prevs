@@ -3,6 +3,9 @@ const auth = express.Router({});
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import passport from 'passport';
+import { Strategy as GithubStrategy } from "passport-github2";
+
 auth.use(express.json());
 auth.use(express.urlencoded({ extended: true }));
 
@@ -32,7 +35,6 @@ async function main() {
         res.status(409).send({
             message: "User with the same credentials already exists, try with a new username or email"
         });
-        return;
     }
       await db.user.create({
         data: {
@@ -95,12 +97,37 @@ async function main() {
       });
       res.json(token);
     } catch (e) {
-      console.error(500);
+      // console.error(500);
       res.status(500).send({
         message: "Internal Server Error",
       });
     }
   });
+
+  auth.post("/loginGithub",async (req, res)=>{
+    passport.use(new GithubStrategy({
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: "http://127.0.0.1:3000/auth/loginGithub/callback"
+        //@ts-ignore
+    },async function(accessToken, refreshToken, profile, done){
+        console.log(profile);
+        console.log(accessToken);
+        //@ts-ignore
+        return done(err, user);
+    }
+    ))
+  });
+
+  auth.get('/github', ()=>{
+    passport.authenticate('github',{scope: ['user: email']});
+  })
+
+  auth.get('/github/callback',(req, res)=>{
+    passport.authenticate('github',{failureRedirect: '/loginGithub'})
+    //succesful authentication, redirect home 
+    res.redirect('/');
+  })
 }
 main().then(()=>{
     db.$disconnect();

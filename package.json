@@ -16,10 +16,12 @@
     "@types/axios": "^0.14.4",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/passport-github2": "^1.2.9",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "passport-github2": "^0.1.12"
   }
 }
