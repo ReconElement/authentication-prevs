@@ -3,11 +3,13 @@ import { posts } from "./posts.js";
 import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { oauth } from "./oauth.js";
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/oauth", oauth);
 app.use("/routes", auth);
 app.get("/test", (req, res) => {
   res.send({
