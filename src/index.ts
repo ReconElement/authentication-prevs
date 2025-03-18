@@ -9,9 +9,9 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/oauth", oauth);
-app.use("/routes", auth);
-app.get("/test", (req, res) => {
+app.use("/oauth/", oauth);
+app.use("routes/", auth);
+app.get("test/", (req, res) => {
   res.send({
     message:
       "This endpoint is written before the middleware so it should probably work",

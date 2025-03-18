@@ -9,7 +9,7 @@ import session from 'express-session';
 
 oauth.use(express.json());
 oauth.use(express.urlencoded({extended: true}));
-oauth.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false}));
+oauth.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false, cookie:{maxAge:60000}}));
 async function main(){
     const db = new PrismaClient();
 
@@ -37,7 +37,7 @@ async function main(){
         user?res.send({message: `User: ${req.user}`}):res.send({message: "Please log in"});
     });
 
-    oauth.get('/account', ensureAuthenticated, function(req, res){
+    oauth.get('/account', ensureAuthenticated,function(req, res){
         const user = req.user;
         res.send({
             message: `User: ${req.user}`
@@ -45,7 +45,8 @@ async function main(){
     });
 
     oauth.get('/login', async (req, res)=>{
-        res.redirect('/github');
+        // res.redirect('/github');
+        res.redirect('http://localhost:3000/oauth/github')
     })
 
     oauth.get('/github',passport.authenticate('github',{scope:[`user:email`]}), (req, res)=>{
@@ -53,6 +54,11 @@ async function main(){
     });
 
     oauth.get('/github/callback',passport.authenticate('github',{failureRedirect: '/login'}),function(req, res){
+        // Object.defineProperty(req.session, "isAuthenticated",{
+        //     value: true
+        // });
+        const isAuthenticated: boolean= true;
+        //@ts-ignore
         res.send({message: "You're logged in"});
     });
 
@@ -65,11 +71,15 @@ async function main(){
 
     //ensureAuthenticated middleware function 
     function ensureAuthenticated(req: express.Request, res: express.Response, next: express.NextFunction){
-        if(req.isAuthenticated()){
-            return next();
-        }
-        else if(req.isUnauthenticated()){
-            res.redirect('/login');
+        let currentTime = new Date().getTime();
+        const expires = req.session.cookie.expires?.getTime();
+        if(expires){
+            if(expires>currentTime){
+                next();
+            }
+            else{
+                res.redirect('/login');
+            }
         }
     }
 }
