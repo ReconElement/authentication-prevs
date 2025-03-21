@@ -7,11 +7,12 @@ generator client {
 }
 
 model User{
-    id          Int     @id @default(autoincrement())
-    email       String  @unique
-    name        String?
-    password    String?
-    posts       Post[]
+    id              Int      @id @default(autoincrement())
+    email           String?  @unique
+    name            String
+    password        String?
+    oauth_provider  String?
+    posts           Post[]
 }
 
 model Post{
@@ -20,7 +21,7 @@ model Post{
     updatedAt   DateTime?    @updatedAt
     title       String
     content     String
-    author      User        @relation(fields: [authorId], references: [id])
+    author      User         @relation(fields: [authorId], references: [id])
     authorId    Int
 }
 
